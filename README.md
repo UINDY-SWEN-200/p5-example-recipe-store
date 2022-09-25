@@ -1,6 +1,6 @@
 # Homework Project 5
 
-This week we’re going to extend homework 4 by developing the same functions using the [Svelte](https://svelte.dev) framwork.
+This week we’re going to learn the basics of HTML/CSS in the context of a GUI framework: [Svelte](https://svelte.dev).
 
 In addition to the [Svelte](https://svelte.dev) documentation itself you can find many useful videos and tutorials. Here are a few that I think are pretty good:
 
@@ -12,9 +12,7 @@ In addition to the [Svelte](https://svelte.dev) documentation itself you can fin
 
 # Requirements
 
-The idea is to move your HW4 code to Svelte. Think about how best to do this given the features that Svelte has to offer. Don't use `querySelector()`, or `getElementById()`, but use the built-in features of Svelte to connect Typescript variables to element values.
-
-Rather than using `addEventListener()` or attribute assignment (e.g., `element.onsomething = ...`) use a Svelte mechanism (e.g., `on:action = {() => ...)`) to connection event handlers to specific element related events.
+We're going to build on the code from project 4
 
 Points will be distributed as follows:
 
