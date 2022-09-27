@@ -12,7 +12,9 @@ In addition to the [Svelte](https://svelte.dev) documentation itself you can fin
 
 # Requirements
 
-We're going to build on the code from project 4
+We're going to build on the code from project 4 to create a recipe application completely in Svelte.
+
+Copy your project 4 classes to the lib folder. Edit the 'page.svelte' file to implement the recipe application.
 
 Points will be distributed as follows:
 
