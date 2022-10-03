@@ -3,7 +3,7 @@
  */
 
 import { SimpleDB } from "./simpledb"
-import { IDb, IObserver } from "./dbObserver"
+import type { IDb, IObserver } from "./dbObserver"
 
 export class SingleDB<T> extends SimpleDB<T> implements IDb {
   private static _singleton: SingleDB<any>
@@ -23,7 +23,15 @@ export class SingleDB<T> extends SimpleDB<T> implements IDb {
     }
   }
 
-  subscribe(observer: IObserver) {}
-  unsubscribe(observer: IObserver) {}
-  notify() {}
+  subscribe(observer: IObserver) {
+    this.observers.push(observer)
+  }
+  unsubscribe(observer: IObserver) {
+    this.observers = this.observers.filter(o => o !== observer)
+  }
+
+  notify() {
+    this.observers.forEach(o => o.notify())
+  }
+  
 }
