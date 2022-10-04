@@ -3,6 +3,7 @@
  */
 
  import { SingleDB } from "./singledb"
+ import type { DBObserver } from "./dbObserver"
 
  export interface RecipeItem {
    name: string
@@ -19,6 +20,10 @@
  
    constructor() {
      this.ingredients = new SingleDB<RecipeItem>()
+   }
+
+   subscribeObserver(ob:DBObserver<SingleDB<RecipeItem>, RecipeItem>) {
+    this.ingredients.subscribe(ob)
    }
  
    addIngredient(name: string, amount: number, units: string) {

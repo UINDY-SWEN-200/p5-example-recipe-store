@@ -1,32 +1,38 @@
 /*
- ** A very simple observer
+ ** A slightly more complex observer
  */
 
-export interface IDb {
-  subscribe(o: IObserver): void
-  unsubscribe(o: IObserver): void
+export interface IDb<D,T> {
+  subscribe(o: IObserver<D,T>): void
+  unsubscribe(o: IObserver<D,T>): void
+  allItems(): T[]
 }
 
-export interface IObserver {
-  notify(): void
+export interface IObserver<D,T> {
+  notify(ob:IDb<D,T>): void
 }
 
-export class DBObserver implements IObserver {
+export class DBObserver<D,T> implements IObserver<D,T> {
   public count: number
+  private cb: (cnt:number)=>void | null
 
-  constructor() {
+  constructor(cb:(cnt:number)=>void | null) {
     this.count = 0
+    this.cb = cb
   }
 
-  subscribeObservable(ob: IDb) {
+  subscribeObservable(ob: IDb<D,T>) {
     ob.subscribe(this)
   }
 
-  unsubscribeObservable(ob: IDb) {
+  unsubscribeObservable(ob: IDb<D,T>) {
     ob.unsubscribe(this)
   }
 
-  notify() {
-    this.count++
+  notify(ob:IDb<D,T>) {
+    this.count = ob.allItems().length
+    if (this.cb){
+      this.cb(this.count)
+    }
   }
 }

@@ -1,23 +1,35 @@
-<script>
-    export let name = ''
+<script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+    export let name:string = ''
     export let units = ''
-    export let value = 0.0
+    export let amount = 0.0
+
 </script>
 
-<section>
-<div>
+<section class="menuRow">
+<div class="cell">
     {name}
 </div>
-<div>
-    {value}
+<div class="cell">
+    {amount}
 </div>
-<div>
+<div class="cell">
     {units}
+</div>
+<div class="cell">
+<button on:click={() => dispatch('delete')}>x</button>
 </div>
 </section>
 
 <style>
     section {
-        display:flex;
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    .cell {
+        padding: 5px;
+        font-size: 1.5rem;
     }
 </style>
