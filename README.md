@@ -18,8 +18,8 @@ Copy your project 4 classes to the lib folder. Edit the 'page.svelte' file to im
 
 Points will be distributed as follows:
 
-- 20% Includes a form with a Svelte action that correctly uses `preventDefault`
-- 20% Attaches multiple event handlers using the Svelte `on:action = ...` mechanism
-- 20% Modifies the style of a DOM element in a useful way
+- 20% Includes an "add item" form component that dispatches a custom Svelte `submit` action.
+- 20% Displays the recipe in a tabular form that permits recipe items to be deleted
+- 20% Keeps the recipe items in a Svelte `store` obejct (rather than a `SimpleDB`) and this store is access by a component that displays the number of ingredients.
 - 20% Uses correct Typescript typing
 - 20% Uses consistent and clean style
