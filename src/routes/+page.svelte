@@ -1,24 +1,17 @@
 <script lang="ts">
-	import {Recipe} from "../lib/recipe"
-	import type {RecipeItem} from "../lib/recipe"
+
+	import {theRecipe} from "$lib/store"
 	import RecipeItemDisplay from "../components/RecipeItemDisplay.svelte"
-	import {DBObserver} from "../lib/dbObserver"
-	import type {SingleDB} from "../lib/singledb"
-	
-	let theRecipe = new Recipe()
-	theRecipe.addIngredient("milk", 3, "cups")
-	theRecipe.addIngredient("eggs",2,"ea")
+
+	$theRecipe.addIngredient("milk", 3, "cups")
+	$theRecipe.addIngredient("eggs",2,"ea")
 
 	let count = 0;
+	theRecipe.subscribe(recipe => {
+		count = recipe.numberOfIngredients()
+	})
 
-	const updateCount = (cnt:number) => {
-		count = cnt
-	}
-
-	let observer = new DBObserver<SingleDB<RecipeItem>, RecipeItem>((cnt) => updateCount(cnt))
-	theRecipe.subscribeObserver(observer)
-
-	let theIngredients = theRecipe.getIngredients()
+	let theIngredients = $theRecipe.getIngredients()
 	
 	let amount : number | string =''
 	let name=''
@@ -27,14 +20,16 @@
 
 
 	const handleDelete = (i:number) => {
-		theRecipe.deleteIngredient(theIngredients[i].name)
-		theIngredients = theRecipe.getIngredients()
+		$theRecipe.deleteIngredient(theIngredients[i].name)
+		theIngredients = $theRecipe.getIngredients()
+		theRecipe.set($theRecipe)
 	}
 
 	const addItem = () => {
 		if (typeof amount === "number") {
-			theRecipe.addIngredient(name, amount, units)
-			theIngredients = theRecipe.getIngredients()
+			$theRecipe.addIngredient(name, amount, units)
+			theIngredients = $theRecipe.getIngredients()
+			theRecipe.set($theRecipe)
 		}
 		amount = ''
 		name = ''
