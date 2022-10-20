@@ -1,42 +1,38 @@
 <script lang="ts">
+	import { theRecipe } from '$lib/store';
+	import RecipeItemDisplay from '../components/RecipeItemDisplay.svelte';
 
-	import {theRecipe} from "$lib/store"
-	import RecipeItemDisplay from "../components/RecipeItemDisplay.svelte"
-
-	$theRecipe.addIngredient("milk", 3, "cups")
-	$theRecipe.addIngredient("eggs",2,"ea")
+	theRecipe.set([
+		{ name: 'milk', amount: 3, units: 'cups' },
+		{ name: 'eggs', amount: 2, units: 'ea' }
+	]);
 
 	let count = 0;
-	theRecipe.subscribe(recipe => {
-		count = recipe.numberOfIngredients()
-	})
+	theRecipe.subscribe((recipe) => {
+		count = recipe.length;
+	});
 
-	let theIngredients = $theRecipe.getIngredients()
-	
-	let amount : number | string =''
-	let name=''
-	let units=''
-	let amountField:HTMLInputElement;
+	let amount: number | string = '';
+	let name = '';
+	let units = '';
+	let amountField: HTMLInputElement;
 
-
-	const handleDelete = (i:number) => {
-		$theRecipe.deleteIngredient(theIngredients[i].name)
-		theIngredients = $theRecipe.getIngredients()
-		theRecipe.set($theRecipe)
-	}
+	const handleDelete = (i: number) => {
+		const recipe = [...$theRecipe];
+		recipe.splice(i, 1);
+		theRecipe.set(recipe);
+	};
 
 	const addItem = () => {
-		if (typeof amount === "number") {
-			$theRecipe.addIngredient(name, amount, units)
-			theIngredients = $theRecipe.getIngredients()
-			theRecipe.set($theRecipe)
+		if (typeof amount === 'number') {
+			const newRecipe = [...$theRecipe, { name, amount, units }];
+			theRecipe.set(newRecipe);
 		}
-		amount = ''
-		name = ''
-		units = ''
-		amountField.focus()
-	}
-
+		amount = '';
+		name = '';
+		units = '';
+		amountField.focus();
+	};
 </script>
 
 <h1>HW 5: Svelte</h1>
@@ -55,20 +51,22 @@
 
 <div class="recipeForm">
 	<form on:submit|preventDefault={() => addItem()}>
-		<label for="amount">Amount:</label><br>
-		<input type="number" id="amount" name="amount" bind:value={amount} bind:this={amountField}><br>
-		<label for="units"> units:</label><br>
-		<input type="text" id="units" name="units" bind:value={units}><br>
-		<label for="name"> name:</label><br>
-		<input type="text" id="name" name="name" bind:value={name}>  <input type="submit" value="add item">
-	</form>		
+		<label for="amount">Amount:</label><br />
+		<input type="number" id="amount" name="amount" bind:value={amount} bind:this={amountField} /><br
+		/>
+		<label for="units"> units:</label><br />
+		<input type="text" id="units" name="units" bind:value={units} /><br />
+		<label for="name"> name:</label><br />
+		<input type="text" id="name" name="name" bind:value={name} />
+		<input type="submit" value="add item" />
+	</form>
 </div>
-<p/>
+<p />
 
 <div class="recipeDisplay">
-	{#each theIngredients as item,i}
+	{#each $theRecipe as item, i}
 		{#if item}
-			<RecipeItemDisplay {...item} on:delete={()=>handleDelete(i)}/>
+			<RecipeItemDisplay {...item} on:delete={() => handleDelete(i)} />
 		{/if}
 	{/each}
 </div>
@@ -76,10 +74,9 @@
 	Number of ingredients: {count}
 </div>
 
-
 <style>
 	.recipeDisplay {
-		width:50%;
+		width: 50%;
 		border: 1px solid blue;
 		padding: 10px;
 	}
@@ -89,5 +86,4 @@
 		padding: 3px;
 		margin: 2px;
 	}
-	
 </style>

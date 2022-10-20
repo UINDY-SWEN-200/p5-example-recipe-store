@@ -1,4 +1,4 @@
-import {writable} from "svelte/store"
-import { Recipe } from "./recipe"
+import { writable } from 'svelte/store';
+import type { RecipeItem } from './recipeItem';
 
-export const theRecipe = writable(new Recipe())
+export const theRecipe = writable<RecipeItem[]>([]);
